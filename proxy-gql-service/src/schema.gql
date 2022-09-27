@@ -1,0 +1,125 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type JournalType {
+  _id: ID!
+  loginDate: String!
+  leaveDate: String!
+  timeSpent: String!
+}
+
+type ProgressionStatisticType {
+  failPerLevelAVG: Int!
+  timePerLevelAVG: String!
+  levelCompletedNumber: Int!
+  levelInProgressNumber: Int!
+  levelRestNumber: Int!
+}
+
+type ProgressionType {
+  _id: ID!
+  levelName: String!
+  levelNumber: Int!
+  failAttempt: Int!
+  levelStatus: LevelStatus!
+  completeDate: String!
+  spentTime: String!
+}
+
+enum LevelStatus {
+  IN_PROGRESS
+  DONE
+}
+
+type JournalStatisticType {
+  totalTimePassed: String!
+  totalTimePassedWeek: String!
+  totalTimePassedToday: String!
+}
+
+type AchievementType {
+  _id: ID!
+  trophyName: String!
+  trophyAvatar: String!
+  gainDate: String!
+}
+
+type GameType {
+  _id: ID!
+  name: String!
+  avatar: String!
+  numLevels: Int!
+  achievements(childId: String!): [AchievementType!]!
+  journals(childId: String!): [JournalType!]!
+  journalStatistic(childId: String!): JournalStatisticType!
+  progressions(childId: String!): [ProgressionType!]!
+  progressionStatistic(childId: String!): ProgressionStatisticType!
+  createdAt: String!
+}
+
+type ChildType {
+  _id: ID!
+  name: String!
+  avatar: String!
+  lastLoginDate: String!
+  games: [GameType!]!
+  createdAt: String!
+}
+
+type ChildrenAchievementType {
+  childName: String!
+  trophyName: String!
+  trophyAvatar: String!
+}
+
+type ParentType {
+  _id: ID!
+  username: String!
+  email: String!
+  avatar: String!
+  usingOauthService: Boolean!
+  children: [ChildType!]!
+  createdAt: String!
+}
+
+type Query {
+  getAvatars(offset: Int = 0, limit: Int = 5): [String!]!
+  getProfile: ParentType!
+  getChildrenAchievements: [ChildrenAchievementType!]!
+  getGameInfo(gameId: String!): GameType!
+}
+
+type Mutation {
+  addChild(addChildInput: AddChildInput!): ChildType!
+  deleteChild(childId: String!): ChildType!
+  registerParent(registerParentInput: RegisterParentInput!): ParentType!
+  confirmUser(confirmationCode: String!): Boolean
+  login(loginInput: LoginInput!): String!
+  forgotpassword(forgotPwdDtoInput: ForgotPwdDtoInput!): ParentType!
+  resetpassword(resetPasswordToken: String!, resetPwdDtoInput: ResetPwdDtoInput!): ParentType!
+}
+
+input AddChildInput {
+  name: String!
+  avatar: String!
+}
+
+input RegisterParentInput {
+  username: String!
+  email: String!
+  password: String!
+}
+
+input LoginInput {
+  username: String!
+  password: String!
+}
+
+input ForgotPwdDtoInput {
+  email: String!
+}
+
+input ResetPwdDtoInput {
+  password: String!
+}

@@ -1,0 +1,1 @@
+proxy-gql-service
